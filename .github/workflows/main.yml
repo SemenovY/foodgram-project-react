@@ -13,7 +13,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.10
+        python-version: 3.10.9
 
     - name: Install dependencies
       run: | 
@@ -76,6 +76,10 @@ jobs:
 #          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
 #          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
 #          echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+#          #cd infra - primer vebinar ritis
+#          #sudo docker compose up -d potomu chto plagin compose
+#          #sudo docker exec -T backend python manage.py migrate
+#          #... collectstatic
 #          sudo docker-compose up -d
 #          sudo docker-compose exec -it web bash python manage.py collectstatic -yes
 
