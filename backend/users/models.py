@@ -11,3 +11,7 @@ class User(AbstractUser):
         'Биография',
         blank=True,
     )
+    style = models.TextField(
+        'Style',
+        blank=True,
+    )
