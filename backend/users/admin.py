@@ -1,7 +1,7 @@
-# abstract_user/users/admin.py
-"""Admin panel for user models."""
+"""Admin panel for abstractuser models."""
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
