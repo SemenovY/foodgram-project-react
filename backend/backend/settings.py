@@ -132,3 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 EMPTY_VALUE = '-пусто-'
+
+LENGTH_OF_FIELDS_EMAIL = 254
+LENGTH_OF_FIELDS_USER = 150
