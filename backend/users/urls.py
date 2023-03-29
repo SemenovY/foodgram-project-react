@@ -8,9 +8,7 @@ router = DefaultRouter()
 router.register('users', UserViewSet, basename='users')
 
 urlpatterns = [
-    # Djoser создаст набор необходимых эндпоинтов, для управления пользователями в Django:
-    path('auth/', include('djoser.urls')),
-    # JWT-эндпоинты, для управления JWT-токенами:
-    path('auth/', include('djoser.urls.jwt')),
     path('', include(router.urls)),
+    path('api/', include('djoser.urls')),  # Работа с пользователями.
+    path('api/', include('djoser.urls.authtoken')),  # Работа с токенами.,
 ]
