@@ -1,7 +1,33 @@
 """Admin panel for abstractuser models."""
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
-admin.site.register(User, UserAdmin)
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    """Настройка пользователя для админки."""
+
+    list_display = (
+        'username',
+        'first_name',
+        'last_name',
+        'email',
+        'is_active',
+    )
+    list_filter = ('is_active',)
+    search_fields = ('email__istartswith', 'username__istartswith')
+    fieldsets = (
+        (
+            None,
+            {
+                'fields': (
+                    'username',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'is_active',
+                )
+            },
+        ),
+    )
