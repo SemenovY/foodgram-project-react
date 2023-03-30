@@ -25,6 +25,8 @@ class CustomUserCreateSerializer(UserCreateSerializer):
     """Сериализатор создания пользователя"""
 
     class Meta:
+        """CustomUser serializer meta."""
+
         model = User
         fields = (
             'id',
