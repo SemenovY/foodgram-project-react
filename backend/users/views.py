@@ -1,16 +1,20 @@
 """Users app views."""
-from rest_framework import permissions, viewsets
-from rest_framework.pagination import PageNumberPagination
+from djoser.views import UserViewSet
 
 from .models import User
-from .serializers import UserSerializer
+from .serializers import CustomUserSerializer
+
+# from rest_framework import permissions, viewsets
+# from rest_framework.pagination import PageNumberPagination
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UsersViewSet(UserViewSet):
     """ViewSet for users."""
 
     queryset = User.objects.all()
-    #    serializer_class = UserSerializer
-    pagination_class = PageNumberPagination
-    #    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    permission_classes = (permissions.AllowAny,)
+    serializer_class = CustomUserSerializer
+
+
+#    pagination_class = PageNumberPagination
+#    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+#   permission_classes = (permissions.AllowAny,)
