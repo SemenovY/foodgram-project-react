@@ -18,6 +18,7 @@ class CustomUserSerializer(UserSerializer):
             'username',
             'first_name',
             'last_name',
+            #            'is_subscribed',
         )
 
 
@@ -29,10 +30,9 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
         model = User
         fields = (
-            'id',
+            'email',
             'username',
             'first_name',
             'last_name',
-            'email',
             'password',
         )
