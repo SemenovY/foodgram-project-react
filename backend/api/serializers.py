@@ -1,15 +1,17 @@
-"""Users app serializers."""
+"""API сериализаторы для всех моделей."""
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from recipes.models import Ingredient
+from rest_framework import serializers
 
 User = get_user_model()
 
 
 class CustomUserSerializer(UserSerializer):
-    """User serializer."""
+    """Сериализатор для модели User."""
 
     class Meta:
-        """User serializer meta."""
+        """Поля и модель сериализатора."""
 
         model = User
         fields = (
@@ -23,10 +25,10 @@ class CustomUserSerializer(UserSerializer):
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    """Сериализатор создания пользователя"""
+    """Сериализатор для создания пользователя."""
 
     class Meta:
-        """CustomUser serializer meta."""
+        """Поля и модель для сериализатора CreateUser."""
 
         model = User
         fields = (
@@ -36,4 +38,18 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             'first_name',
             'last_name',
             'password',
+        )
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    """Сериализатор для ингридиентов"""
+
+    class Meta:
+        """Поля и модель для сериализатора Ingredient."""
+
+        model = Ingredient
+        fields = (
+            'id',
+            'name',
+            'measurement_unit',
         )
