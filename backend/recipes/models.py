@@ -7,7 +7,6 @@ class Ingredient(models.Model):
 
     name = models.CharField(
         max_length=200,
-        db_index=True,
         verbose_name='Название ингредиента',
     )
     measurement_unit = models.CharField(
@@ -28,3 +27,19 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f'{self.name}, {self.measurement_unit}.'
+
+
+# class Favorites(models.Model):
+
+
+# id integer
+# Уникальный id
+
+# name	string <= 200 characters
+# Название
+
+# image	string <url>
+# Ссылка на картинку на сайте
+
+# cooking_time integer >= 1
+# Время приготовления (в минутах)

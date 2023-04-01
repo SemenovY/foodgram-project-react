@@ -48,8 +48,5 @@ class IngredientSerializer(serializers.ModelSerializer):
         """Поля и модель для сериализатора Ingredient."""
 
         model = Ingredient
-        fields = (
-            'id',
-            'name',
-            'measurement_unit',
-        )
+        fields = '__all__'
+        read_only_fields = ('__all__',)

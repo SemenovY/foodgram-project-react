@@ -13,16 +13,3 @@ class IngredientAdmin(admin.ModelAdmin):
         'name',
         'measurement_unit',
     )
-    list_filter = ('name',)
-    fieldsets = (
-        (
-            None,
-            {
-                'fields': (
-                    'id',
-                    'name',
-                    'measurement_unit',
-                )
-            },
-        ),
-    )
