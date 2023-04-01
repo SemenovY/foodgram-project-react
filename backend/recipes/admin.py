@@ -9,6 +9,7 @@ class IngredientAdmin(admin.ModelAdmin):
     """Настройка списка ингредиентов для админки."""
 
     list_display = (
+        'id',
         'name',
         'measurement_unit',
     )

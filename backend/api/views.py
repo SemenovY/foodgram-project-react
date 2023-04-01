@@ -22,11 +22,13 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     # Указываем фильтрующий бэкенд DjangoFilterBackend
     # Из библиотеки django-filter
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    # Временно отключим пагинацию на уровне вьюсета,
-    # так будет удобнее настраивать фильтрацию
-    pagination_class = None
-    # Фильтровать будем по полю name
-    filterset_fields = 'name'
-    # Поиск по имени
-    search_fields = ('^name',)
+
+
+#  filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+# Временно отключим пагинацию на уровне вьюсета,
+# так будет удобнее настраивать фильтрацию
+# pagination_class = None
+# Фильтровать будем по полю name
+# filterset_fields = 'name'
+# Поиск по имени
+# search_fields = ('^name',)
