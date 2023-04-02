@@ -13,23 +13,9 @@ class UserAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
         'email',
-        'password',
+        'password',  # Удалить при рефакторинге
         'is_active',
     )
-    list_filter = ('is_active',)
-    search_fields = ('email__istartswith', 'username__istartswith')
-    fieldsets = (
-        (
-            None,
-            {
-                'fields': (
-                    'username',
-                    'first_name',
-                    'last_name',
-                    'email',
-                    'password',
-                    'is_active',
-                )
-            },
-        ),
-    )
+
+    list_filter = ('email', 'first_name', 'is_subscribed')
+    search_fields = ('username', 'email')

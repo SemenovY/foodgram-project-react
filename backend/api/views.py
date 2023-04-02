@@ -1,22 +1,23 @@
 """API app views."""
-from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import Ingredient
+from recipes.models import Ingredient, Tag
 from rest_framework import filters, viewsets
 from users.models import User
 
-from .serializers import CustomUserSerializer, IngredientSerializer
+from .serializers import (CustomUserSerializer, IngredientSerializer,
+                          TagSerializer)
 
 
 class UsersViewSet(UserViewSet):
-    """ViewSet для модели пользователь."""
+    """ViewSet для модели пользователь"""
 
-    queryset = User.objects.all()  # убрать это поле
-    serializer_class = CustomUserSerializer  # убрать это поле
+    queryset = User.objects.all()  # TODO: убрать это поле
+    serializer_class = CustomUserSerializer  # TODO: убрать это поле
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
-    """ViewSet для модели ингредиентов."""
+    """ViewSet для модели ингредиентов"""
 
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
@@ -32,3 +33,10 @@ class IngredientViewSet(viewsets.ModelViewSet):
 # filterset_fields = 'name'
 # Поиск по имени
 # search_fields = ('^name',)
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    """ViewSet для модели тэгов"""
+
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
