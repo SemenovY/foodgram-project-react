@@ -1,8 +1,8 @@
-"""Api app."""
+"""Приложение API"""
 from django.apps import AppConfig
 
 
 class ApiConfig(AppConfig):
-    """Api app config."""
+    """Конфиг для приложения API"""
 
     name = 'api'

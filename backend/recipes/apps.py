@@ -1,8 +1,8 @@
-"""Recipes app."""
+"""Приложение для рецептов"""
 from django.apps import AppConfig
 
 
 class RecipesConfig(AppConfig):
-    """Recipes app config."""
+    """Конфиг приложения Recipes"""
 
     name = 'recipes'

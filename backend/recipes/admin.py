@@ -1,4 +1,4 @@
-"""Админ панель для рецептов и ингредиентов."""
+"""Админ панель для рецептов тегов и ингредиентов"""
 from django.contrib import admin
 
 from .models import Ingredient, Recipe, RecipeIngredient, Tag
@@ -6,9 +6,8 @@ from .models import Ingredient, Recipe, RecipeIngredient, Tag
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    """Настройка админки для тэгов"""
+    """Настройка админки для тегов"""
 
-    empty_value_display = '-empty-'
     list_display = ('pk', 'name', 'color', 'slug')
     list_filter = (
         'name',
@@ -18,14 +17,17 @@ class TagAdmin(admin.ModelAdmin):
         'name',
         'slug',
     )
+    empty_value_display = '-empty-'
 
 
 class IngredientsInRecipeInline(admin.TabularInline):
+    """Микс инлайн для рецепта и ингредиента"""
+
     model = Recipe.ingredients.through
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    """Настройка списка ингредиентов для админки."""
+    """Настройка списка ингредиентов для админки"""
 
     inlines = [
         IngredientsInRecipeInline,
@@ -40,6 +42,8 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
+    """Настройка админпанели для рецептов"""
+
     inlines = [
         IngredientsInRecipeInline,
     ]
@@ -55,8 +59,10 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 # TODO: readonly_fields = ('count_favorite',) потом добавить
+
 # TODO: def count_favorite(self, obj): потом добавить
 # TODO:     return obj.favorite.all().count() потом добавить
+
 # TODO: count_favorite.short_description = 'Избранных' потом добавить
 
 

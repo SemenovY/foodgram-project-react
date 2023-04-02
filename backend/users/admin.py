@@ -1,4 +1,4 @@
-"""Admin panel for abstractuser models."""
+"""Панель администратора для модели User"""
 from django.contrib import admin
 
 from .models import User
@@ -13,8 +13,7 @@ class UserAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
         'email',
-        'password',  # Удалить при рефакторинге
-        'is_active',
+        'is_subscribed',
     )
 
     list_filter = ('email', 'first_name', 'is_subscribed')

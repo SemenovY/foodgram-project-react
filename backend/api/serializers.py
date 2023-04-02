@@ -1,10 +1,8 @@
 """API сериализаторы для всех моделей"""
-from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from recipes.models import Ingredient, Tag
+from recipes.models import Ingredient, Recipe, Tag
 from rest_framework import serializers
-
-User = get_user_model()
+from users.models import User
 
 
 class CustomUserSerializer(UserSerializer):
@@ -33,7 +31,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         model = User
         fields = (
             'email',
-            'id',
+            'id',  # TODO удалить это поле или проверить нужно ли
             'username',
             'first_name',
             'last_name',
@@ -49,7 +47,14 @@ class IngredientSerializer(serializers.ModelSerializer):
 
         model = Ingredient
         fields = '__all__'
-        read_only_fields = ('__all__',)
+
+
+#         fields = (
+#            'id',
+#            'name',
+#            'measurement_unit'
+#        )
+#        read_only_fields = ('__all__',)
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -59,4 +64,23 @@ class TagSerializer(serializers.ModelSerializer):
         """Поля и модель для сериализатора Tag"""
 
         model = Tag
+        fields = '__all__'
+
+
+# TODO заменить поля на эти, когда доработаю color validator
+#       fields = (
+#           'id',
+#           'name',
+#           'color',
+#           'slug',
+#       )
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор для рецептов"""
+
+    class Meta:
+        """Поля и модель для рецептов"""
+
+        model = Recipe
         fields = '__all__'

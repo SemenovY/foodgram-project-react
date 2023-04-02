@@ -1,8 +1,8 @@
-"""Users app."""
+"""Приложение Users"""
 from django.apps import AppConfig
 
 
 class UsersConfig(AppConfig):
-    """Users app config."""
+    """Users конфиг"""
 
     name = 'users'
