@@ -14,7 +14,7 @@ class CustomUserSerializer(UserSerializer):
         model = User
         fields = (
             'email',
-            'id',
+            'id',  # TODO это поле возможно надо удалить
             'username',
             'first_name',
             'last_name',

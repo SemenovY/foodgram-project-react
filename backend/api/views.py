@@ -6,19 +6,17 @@ from rest_framework import viewsets
 from users.models import User
 
 # from rest_framework import filters, permissions
-from .serializers import (
-    CustomUserSerializer,
-    IngredientSerializer,
-    RecipeSerializer,
-    TagSerializer,
-)
+from .serializers import (CustomUserSerializer, IngredientSerializer,
+                          RecipeSerializer, TagSerializer)
 
 
 class UsersViewSet(UserViewSet):
     """ViewSet для модели UsersViewSet"""
 
     queryset = User.objects.all()  # TODO: убрать это поле?
-    serializer_class = CustomUserSerializer  # TODO: убрать это поле?
+
+
+#    serializer_class = CustomUserSerializer  # TODO: убрать это поле?
 
 
 #   permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
