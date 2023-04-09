@@ -16,7 +16,7 @@ class Ingredient(models.Model):
         verbose_name='Единицы измерения',
     )
 
-    class meta:
+    class Meta:
         ordering = ['name']
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
@@ -74,7 +74,8 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         upload_to='recipes/images/',
-        blank=True,
+        # blank=True,
+        blank=False,
         null=True,
         verbose_name='Фотография рецепта',
     )
@@ -148,3 +149,9 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f'Рецепт: {self.recipe}, Ингредиент: {self.ingredient}, Кол-во: {self.amount}'
+
+# class Favorite(models.Model):
+# """Модель списка избранного"""
+
+#  class ShopingList(models.Model):
+#     """Модель списка покупок"""

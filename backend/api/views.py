@@ -7,7 +7,7 @@ from users.models import User
 
 # from rest_framework import filters, permissions
 from .serializers import (CustomUserSerializer, IngredientSerializer,
-                          RecipeSerializer, TagSerializer)
+                          RecipeCreateSerializer, TagSerializer)
 
 
 class UsersViewSet(UserViewSet):
@@ -56,7 +56,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """Viewset для объектов модели RecipeViewSet"""
 
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_class = RecipeCreateSerializer
 
 
 # TODO Сделать пермишены и возможно фильтры

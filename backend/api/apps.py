@@ -3,6 +3,10 @@ from django.apps import AppConfig
 
 
 class ApiConfig(AppConfig):
-    """Конфиг для приложения API"""
+    """_summary_
+
+    Args:
+        AppConfig (_type_): _description_
+    """
 
     name = 'api'
