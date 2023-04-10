@@ -16,9 +16,30 @@ router.register(r'recipes', RecipeViewSet, basename='recipes')
 urlpatterns = [
     path('', include(router.urls)),
     path(r'auth/', include('djoser.urls.authtoken')),
-    path('', include('djoser.urls')),
     # TODO Сделать пути для подписок, избранное, список покупок
     #    path(r'.../subscribe/')
     #    path(r'.../favorite/')
     #    path(r'/shopping_cart/')
 ]
+# urlpatterns = [
+#     path('', include(router.urls)),
+#     path(r'auth/', include('djoser.urls.authtoken')),
+#     path(r'users/<int:id>/subscribe/', MyUserViewSet.as_view({
+#         'post': 'subscribe',
+#         'delete': 'subscribe'
+#         }),
+#         name='subscribe'
+#         ),
+#     path(r'recipes/<int:id>/favorite/' , RecipeViewSet.as_view({
+#         'post': 'favorite',
+#         'delete': 'favorite'
+#         }),
+#         name='favorite'
+#         ),
+#     path(r'recipes/<int:id>/shopping_cart/', RecipeViewSet.as_view({
+#         'post': 'shopping_cart',
+#         'delete': 'shopping_cart'
+#         }),
+#         name='shopping_cart'
+#         ),
+# ]

@@ -4,7 +4,16 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+# from decouple import Csv, config
 load_dotenv()
+
+
+# CSRF_TRUSTED_ORIGINS = config(
+#    'CSRF_TRUSTED_ORIGINS',
+#    default='http://localhost, http://127.0.0.1, http://94.131.11.48',
+#    cast=Csv()
+# )
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,10 +55,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
-
+# TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [TEMPLATES_DIR],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -113,6 +123,7 @@ DJOSER = {
         'user_create': 'api.serializers.CustomUserCreateSerializer',
         'user': 'api.serializers.CustomUserSerializer',
         'current_user': 'api.serializers.CustomUserSerializer',
+        #  'set_password': 'djoser.serializers.SetPasswordSerializer'
     },
     # TODO: Возможно убрать этот пермишен.
     'PERMISSIONS': {
@@ -128,6 +139,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

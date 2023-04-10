@@ -37,12 +37,12 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
-        verbose_name='Наименование',
+        verbose_name='Название',
     )
     color = models.CharField(
         max_length=7,
         unique=True,
-        verbose_name='Цвет в HEX',
+        verbose_name='Цветовой HEX-код',
     )
     slug = models.SlugField(
         max_length=200,
@@ -66,7 +66,7 @@ class Recipe(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='recipe',
-        verbose_name='Автор',
+        verbose_name='Автор публикации (пользователь)',
     )
     name = models.CharField(
         max_length=200,
@@ -74,13 +74,13 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         upload_to='recipes/images/',
-        # blank=True,
-        blank=False,
+        # TODO: upload_to='recipes/',
+        blank=True,
         null=True,
         verbose_name='Фотография рецепта',
     )
     text = models.TextField(
-        verbose_name='Описание',
+        verbose_name='Текстовое описание',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -150,8 +150,64 @@ class RecipeIngredient(models.Model):
     def __str__(self):
         return f'Рецепт: {self.recipe}, Ингредиент: {self.ingredient}, Кол-во: {self.amount}'
 
-# class Favorite(models.Model):
-# """Модель списка избранного"""
 
-#  class ShopingList(models.Model):
-#     """Модель списка покупок"""
+# class Favorite(models.Model):
+#    """Модель списка избранного"""
+#    user = models.ForeignKey(
+#        MyUser,
+#        on_delete=models.CASCADE,
+#        related_name='favorite',
+#        verbose_name='Автор списка избранного'
+#        )
+#    recipe = models.ForeignKey(
+#        Recipe,
+#        on_delete=models.CASCADE,
+#        related_name='favorite',
+#        verbose_name='Рецепт из списка избранного'
+#        )
+#    date_added = DateTimeField(
+#        verbose_name='Дата добавления',
+#        auto_now_add=True
+#    )
+
+#    class Meta:
+#        verbose_name = 'Избранное'
+#        verbose_name_plural = 'Избранные'
+#        constraints = [
+#            models.UniqueConstraint(
+#                fields=['user', 'recipe'],
+#                name='unique_favorite_recipe'
+#            )
+#        ]
+
+#    def __str__(self):
+#        return f'Пользователь: {self.user} добавил в избранное рецепт: {self.recipe}'
+
+# class ShopingList(models.Model):
+#    """Модель списка покупок"""
+#    user = models.ForeignKey(
+#        MyUser,
+#        on_delete=models.CASCADE,
+#        related_name='cart',
+#        verbose_name='Автор списка покупок'
+#        )
+#    recipe = models.ForeignKey(
+#        Recipe,
+#        on_delete=models.CASCADE,
+#        related_name='cart',
+#        verbose_name='Список покупок'
+#        )
+#    date_add = models.DateTimeField(auto_now_add=True)
+
+#    class Meta:
+#        verbose_name = 'Список покупок'
+#        verbose_name_plural = 'Список покупок'
+#        constraints = [
+#            models.UniqueConstraint(
+#                fields=['user', 'recipe'],
+#                name='unique_list_recipe'
+#            )
+#        ]
+
+#    def __str__(self):
+#        return f'Пользователь: {self.user} добавил в cписок покупок: {self.recipe}'
