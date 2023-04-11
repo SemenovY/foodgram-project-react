@@ -1,12 +1,14 @@
 """Вьюсет для приложения API"""
+from django.shortcuts import get_object_or_404
 # from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
 from recipes.models import Ingredient, Recipe, Tag
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from users.models import User, Follow
 from .filters import IngredientFilter, RecipeFilterBackend
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
@@ -14,8 +16,9 @@ from .serializers import (
     CreateRecipeSerializer,
     IngredientSerializer,
     RecipeSerializer,
-    TagSerializer,
+    TagSerializer, UserFollowSerializer,
 )
+
 
 # TODO возможно нужно удалить эту переменную юзер
 # User = get_user_model()
@@ -27,68 +30,66 @@ class UsersViewSet(UserViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     pagination_class = CustomPageNumberPagination
 
-    # @action(
-    #     methods=['GET'],
-    #     detail=False,
-    #     url_path='subscriptions',
-    #     url_name='subscriptions',
-    #     permission_classes=[IsAuthenticated, ]
-    #     )
-    #
-    # def subscriptions(self, request):
-    #     """Выдает авторов, на кого подписан пользователь"""
-    #     user = request.user
-    #     queryset = MyUser.objects.filter(following__user=user)
-    #     pages = self.paginate_queryset(queryset)
-    #     serializer = UserFollowSerializer(
-    #         pages, many=True, context={'request': request}
-    #     )
-    #     return self.get_paginated_response(serializer.data)
-    #
-    # @action(
-    #     methods=['POST', 'DELETE'],
-    #     detail=True,
-    #     url_path='subscribe',
-    #     url_name='subscribe',
-    #     permission_classes=[IsAuthenticated, ])
-    #
-    # def subscribe(self, request, id=None):
-    #     """Подписаться/отписаться на/от автора"""
-    #     user = self.request.user
-    #     author = get_object_or_404(MyUser, pk=id)
-    #
-    #     if self.request.method == 'POST':
-    #         if user == author:
-    #             raise exceptions.ValidationError(
-    #                 'Подписка на самого себя запрещена.'
-    #             )
-    #         if Follow.objects.filter(
-    #             user=user,
-    #             author=author
-    #         ).exists():
-    #             raise exceptions.ValidationError('Подписка уже оформлена.')
-    #
-    #         Follow.objects.create(user=user, author=author)
-    #         serializer = self.get_serializer(author)
-    #
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #
-    #     if self.request.method == 'DELETE':
-    #         if not Follow.objects.filter(
-    #             user=user,
-    #             author=author
-    #         ).exists():
-    #             raise exceptions.ValidationError(
-    #                 'Подписка не была оформлена, либо уже удалена.'
-    #             )
-    #         subscription = get_object_or_404(
-    #             Follow,
-    #             user=user,
-    #             author=author
-    #         )
-    #         subscription.delete()
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
-    #     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    @action(
+        methods=['GET'],
+        detail=False,
+        url_path='subscriptions',
+        url_name='subscriptions',
+        permission_classes=[IsAuthenticated, ]
+    )
+    def subscriptions(self, request):
+        """Выдает авторов, на кого подписан пользователь"""
+        user = request.user
+        queryset = User.objects.filter(following__user=user)
+        pages = self.paginate_queryset(queryset)
+        serializer = UserFollowSerializer(
+            pages, many=True, context={'request': request}
+        )
+        return self.get_paginated_response(serializer.data)
+
+    @action(
+        methods=['POST', 'DELETE'],
+        detail=True,
+        url_path='subscribe',
+        url_name='subscribe',
+        permission_classes=[IsAuthenticated, ])
+    def subscribe(self, request, id=None):
+        """Подписаться/отписаться на/от автора"""
+        user = self.request.user
+        author = get_object_or_404(User, pk=id)
+
+        if self.request.method == 'POST':
+            if user == author:
+                raise exceptions.ValidationError(
+                    'Подписка на самого себя запрещена.'
+                )
+            if Follow.objects.filter(
+                user=user,
+                author=author
+            ).exists():
+                raise exceptions.ValidationError('Подписка уже оформлена.')
+
+            Follow.objects.create(user=user, author=author)
+            serializer = self.get_serializer(author)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        if self.request.method == 'DELETE':
+            if not Follow.objects.filter(
+                user=user,
+                author=author
+            ).exists():
+                raise exceptions.ValidationError(
+                    'Подписка не была оформлена, либо уже удалена.'
+                )
+            subscription = get_object_or_404(
+                Follow,
+                user=user,
+                author=author
+            )
+            subscription.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class IngredientViewSet(viewsets.ModelViewSet):

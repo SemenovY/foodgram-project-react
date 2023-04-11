@@ -1,13 +1,13 @@
-# from rest_framework.validators import UniqueTogetherValidator
-# from users.models import Follow
-# from recipes.models import ShopingList, Favorite, RecipeIngredient
+from rest_framework.validators import UniqueTogetherValidator
+from users.models import Follow
+from recipes.models import ShopingList, Favorite, RecipeIngredient
 from django.core.validators import RegexValidator
 
-# follow_unique_validator = UniqueTogetherValidator(
-#     queryset=Follow.objects.all(),
-#     fields=('user', 'author'),
-#     message='Вы уже подписаны на этого автора'
-# )
+follow_unique_validator = UniqueTogetherValidator(
+    queryset=Follow.objects.all(),
+    fields=('user', 'author'),
+    message='Вы уже подписаны на этого автора'
+)
 # TODO: Дописать валидаторы для списка покупок, избранное, и follow
 
 color_validator = [
@@ -17,19 +17,18 @@ color_validator = [
     )
 ]
 
+shopping_cart_validator = [
+    UniqueTogetherValidator(
+        queryset=ShopingList.objects.all(),
+        fields=["recipe", "user"],
+        message='Этот рецепт уже в корзине'
+    )
+]
 
-# shopping_cart_validator = [
-#             UniqueTogetherValidator(
-#                 queryset=ShopingList.objects.all(),
-#                 fields=["recipe", "user"],
-#                 message='Этот рецепт уже в корзине'
-#             )
-#         ]
-
-# favorite_validator = [
-#             UniqueTogetherValidator(
-#                 queryset=Favorite.objects.all(),
-#                 fields=['user', 'recipe'],
-#                 message='Этот рецепт уже добавлен в Избранное'
-#             )
-#         ]
+favorite_validator = [
+    UniqueTogetherValidator(
+        queryset=Favorite.objects.all(),
+        fields=['user', 'recipe'],
+        message='Этот рецепт уже добавлен в Избранное'
+    )
+]

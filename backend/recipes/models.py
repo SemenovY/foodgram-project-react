@@ -1,6 +1,7 @@
 """Модели для ингредиентов, рецептов, тегов"""
 from django.core.validators import MinValueValidator
 from django.db import models
+
 from users.models import User
 
 
@@ -75,7 +76,8 @@ class Recipe(models.Model):
     image = models.ImageField(
         upload_to='recipes/images/',
         # TODO: upload_to='recipes/',
-        blank=True,
+        blank=False,
+        # blank=True,
         null=True,
         verbose_name='Фотография рецепта',
     )
@@ -151,63 +153,64 @@ class RecipeIngredient(models.Model):
         return f'Рецепт: {self.recipe}, Ингредиент: {self.ingredient}, Кол-во: {self.amount}'
 
 
-# class Favorite(models.Model):
-#    """Модель списка избранного"""
-#    user = models.ForeignKey(
-#        MyUser,
-#        on_delete=models.CASCADE,
-#        related_name='favorite',
-#        verbose_name='Автор списка избранного'
-#        )
-#    recipe = models.ForeignKey(
-#        Recipe,
-#        on_delete=models.CASCADE,
-#        related_name='favorite',
-#        verbose_name='Рецепт из списка избранного'
-#        )
-#    date_added = DateTimeField(
-#        verbose_name='Дата добавления',
-#        auto_now_add=True
-#    )
+class Favorite(models.Model):
+    """Модель списка избранного"""
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favorite',
+        verbose_name='Автор списка избранного'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='favorite',
+        verbose_name='Рецепт из списка избранного'
+    )
+    date_added = models.DateTimeField(
+        verbose_name='Дата добавления',
+        auto_now_add=True
+    )
 
-#    class Meta:
-#        verbose_name = 'Избранное'
-#        verbose_name_plural = 'Избранные'
-#        constraints = [
-#            models.UniqueConstraint(
-#                fields=['user', 'recipe'],
-#                name='unique_favorite_recipe'
-#            )
-#        ]
+    class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранные'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_favorite_recipe'
+            )
+        ]
 
-#    def __str__(self):
-#        return f'Пользователь: {self.user} добавил в избранное рецепт: {self.recipe}'
+    def __str__(self):
+        return f'Пользователь: {self.user} добавил в избранное рецепт: {self.recipe}'
 
-# class ShopingList(models.Model):
-#    """Модель списка покупок"""
-#    user = models.ForeignKey(
-#        MyUser,
-#        on_delete=models.CASCADE,
-#        related_name='cart',
-#        verbose_name='Автор списка покупок'
-#        )
-#    recipe = models.ForeignKey(
-#        Recipe,
-#        on_delete=models.CASCADE,
-#        related_name='cart',
-#        verbose_name='Список покупок'
-#        )
-#    date_add = models.DateTimeField(auto_now_add=True)
 
-#    class Meta:
-#        verbose_name = 'Список покупок'
-#        verbose_name_plural = 'Список покупок'
-#        constraints = [
-#            models.UniqueConstraint(
-#                fields=['user', 'recipe'],
-#                name='unique_list_recipe'
-#            )
-#        ]
+class ShopingList(models.Model):
+    """Модель списка покупок"""
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='cart',
+        verbose_name='Автор списка покупок'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='cart',
+        verbose_name='Список покупок'
+    )
+    date_add = models.DateTimeField(auto_now_add=True)
 
-#    def __str__(self):
-#        return f'Пользователь: {self.user} добавил в cписок покупок: {self.recipe}'
+    class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Список покупок'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_list_recipe'
+            )
+        ]
+
+    def __str__(self):
+        return f'Пользователь: {self.user} добавил в cписок покупок: {self.recipe}'

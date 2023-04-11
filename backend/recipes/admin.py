@@ -1,7 +1,7 @@
 """Админ панель для рецептов тегов и ингредиентов"""
 from django.contrib import admin
 
-from .models import Ingredient, Recipe, RecipeIngredient, Tag
+from .models import Ingredient, Recipe, RecipeIngredient, Tag, Favorite, ShopingList
 
 
 @admin.register(Tag)
@@ -48,26 +48,21 @@ class RecipeAdmin(admin.ModelAdmin):
         IngredientsInRecipeInline,
     ]
     exclude = ('ingredients',)
-    # TODO:  list_display = ('id', 'author', 'name', 'count_favorite') Потом добавить
-    list_display = (
-        'id',
-        'author',
-        'name',
-    )
+    list_display = ('id', 'author', 'name', 'count_favorite')
+
     list_filter = ('author', 'name', 'tags')
     empty_value_display = '-empty-'
 
+    readonly_fields = ('count_favorite',)
 
-# TODO: readonly_fields = ('count_favorite',) потом добавить
+    def count_favorite(self, obj):
+        return obj.favorite.all().count()
 
-# TODO: def count_favorite(self, obj): потом добавить
-# TODO:     return obj.favorite.all().count() потом добавить
-
-# TODO: count_favorite.short_description = 'Избранных' потом добавить
+    count_favorite.short_description = 'Избранных'
 
 
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(RecipeIngredient)
-# TODO: admin.site.register(Favorite) потом добавить
-# TODO: admin.site.register(ShopingList)  потом добавить
+admin.site.register(Favorite)
+admin.site.register(ShopingList)
