@@ -4,25 +4,15 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# from decouple import Csv, config
 load_dotenv()
-
-
-# CSRF_TRUSTED_ORIGINS = config(
-#    'CSRF_TRUSTED_ORIGINS',
-#    default='http://localhost, http://127.0.0.1, http://94.131.11.48',
-#    cast=Csv()
-# )
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = (
     'django-insecure-q@#new-h8lz4w7wp+-ofo7)mr@vpdpq%3t3v85$%j1%u8m_*%r'
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -41,7 +31,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
     'recipes.apps.RecipesConfig',
-    'sorl.thumbnail',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -54,12 +44,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+CSRF_COOKIE_SECURE = False
+
 ROOT_URLCONF = 'backend.urls'
 # TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [TEMPLATES_DIR],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -74,20 +66,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv(
-            'DB_ENGINE',
-            default='django.db.backends.postgresql',
-        ),
-        'NAME': os.getenv('DB_NAME', default='postgres'),
-        'USER': os.getenv('POSTGRES_USER', default='postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': os.getenv('DB_HOST', default='localhost'),
-        'PORT': os.getenv('DB_PORT', default=5432),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv(
+#             'DB_ENGINE',
+#             default='django.db.backends.postgresql',
+#         ),
+#         'NAME': os.getenv('DB_NAME', default='postgres'),
+#         'USER': os.getenv('POSTGRES_USER', default='postgres'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+#         'HOST': os.getenv('DB_HOST', default='localhost'),
+#         'PORT': os.getenv('DB_PORT', default=5432),
+#     },
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -111,8 +108,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
 }
 
 DJOSER = {
@@ -121,14 +116,12 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
         'user_create': 'api.serializers.CustomUserCreateSerializer',
-        'user': 'api.serializers.CustomUserSerializer',
         'current_user': 'api.serializers.CustomUserSerializer',
-        #  'set_password': 'djoser.serializers.SetPasswordSerializer'
+        'user': 'api.serializers.CustomUserSerializer',
     },
-    # TODO: Возможно убрать этот пермишен.
     'PERMISSIONS': {
         'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
-        'user_list': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
     },
 }
 
@@ -147,3 +140,19 @@ AUTH_USER_MODEL = 'users.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DATE_TIME_FORMAT = '%d/%m/%Y %H:%M'
+
+EMPTY_VALUE_DISPLAY = '-Пусто-'
+
+NUM_SHOW = 3
+
+CLS_NAME_LEN = 15
+
+MAX_COOKING_TIME = 4320
+
+MIN_COOKING_TIME = 1
+
+MAX_AMOUNT = 24768
+
+MIN_AMOUNT = 1

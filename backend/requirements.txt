@@ -9,6 +9,7 @@ defusedxml==0.7.1
 Django==3.2
 django-admin==2.0.2
 django-excel-response2==3.0.5
+django-extra-fields==3.0.2
 django-filter==22.1
 django-six==1.0.5
 django-stubs==1.16.0

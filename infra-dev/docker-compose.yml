@@ -7,7 +7,7 @@ services:
     ports:
       - "5432"
     volumes:
-      - postgbd_value:/var/lib/postgresql/data
+      - postgresbd_value:/var/lib/postgresql/data
   frontend:
     build:
       context: ../frontend
@@ -25,4 +25,4 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
 volumes:
-  postgbd_value:
+  postgresbd_value:
