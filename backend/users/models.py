@@ -9,33 +9,33 @@ class User(AbstractUser):
     """Кастомная модель пользователя"""
 
     username = models.CharField(
+        verbose_name='Имя пользователя',
         max_length=150,
         unique=True,
-        verbose_name='Имя пользователя',
         validators=(custom_user_validator,),
     )
     email = models.EmailField(
-        unique=True,
-        max_length=254,
         verbose_name='Адрес электронной почты',
+        max_length=254,
+        unique=True,
     )
     first_name = models.CharField(
-        max_length=150,
         verbose_name='Имя',
+        max_length=150,
     )
     last_name = models.CharField(
-        max_length=150,
         verbose_name='Фамилия',
+        max_length=150,
     )
     password = models.CharField(
-        max_length=150,
         verbose_name='Пароль',
+        max_length=150,
     )
     is_active = models.BooleanField(
         verbose_name='Подписан',
         default=True,
     )
-    # TODO тестирую без этих полей
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'username',
@@ -62,15 +62,15 @@ class Subscriptions(models.Model):
 
     user = models.ForeignKey(
         User,
+        verbose_name='Подписчик',
         related_name='subscriber',
         on_delete=models.CASCADE,
-        verbose_name='Подписчик',
     )
     author = models.ForeignKey(
         User,
+        verbose_name='Автор рецепта',
         related_name='subscription',
         on_delete=models.CASCADE,
-        verbose_name='Автор рецепта',
     )
 
     class Meta:

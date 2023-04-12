@@ -1,4 +1,4 @@
-"""Валидатор для Custom User"""
+"""Валидатор для Custom User модели"""
 import re
 
 from django.core.exceptions import ValidationError

@@ -1,3 +1,4 @@
+"""Загружаем данные ингредиентов из файла"""
 import json
 
 from django.core.management import BaseCommand
@@ -5,12 +6,9 @@ from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
+    """Команда для загрузки ингредиентов из файла"""
     def handle(self, *args, **options):
-        with open(
-            '/home/yuriy/dev/foodgram-project-react/data/ingredients.json',
-            'r',
-            encoding='utf-8',
-        ) as file:
+        with open("/app/data/ingredients.json", "r", encoding="utf-8") as file:
             data = json.load(file)
             for item in data:
                 ingredient = Ingredient.objects.create(
@@ -19,6 +17,6 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(
                     self.style.SUCCESS(
-                        f'Successfully created ingredient {ingredient.name}'
+                        f'Successfully created {ingredient.name}'
                     )
                 )

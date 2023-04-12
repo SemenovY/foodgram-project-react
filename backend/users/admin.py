@@ -18,6 +18,6 @@ class CustomUserAdmin(UserAdmin):
         ('is_active', 'password', ),
     )
     fieldsets = []
-    search_fields = ('username', 'email',)
     list_filter = ('is_active', 'first_name', 'email',)
+    search_fields = ('username', 'email',)
     save_on_top = True
