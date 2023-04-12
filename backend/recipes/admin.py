@@ -11,16 +11,14 @@ NUM_SHOW = settings.NUM_SHOW
 
 
 class TagInline(TabularInline):
-    """Вспомогательный класс для отображения тэгов в модели рецептов"""
+    """Класс для отображения тэгов в модели рецептов"""
 
     model = TagRecipe
     extra = NUM_SHOW
 
 
 class IngredientInline(TabularInline):
-    """Вспомогательный класс для отображения
-    ингредиентов в модели рецептов.
-    """
+    """Класс для отображения ингредиентов в модели рецептов"""
 
     model = IngredientRecipe
     extra = NUM_SHOW

@@ -2,7 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from .validators import username_validator
+from .validators import custom_user_validator
 
 
 class User(AbstractUser):
@@ -12,7 +12,7 @@ class User(AbstractUser):
         max_length=150,
         unique=True,
         verbose_name='Уникальное имя пользователя',
-        validators=(username_validator,),
+        validators=(custom_user_validator,),
     )
     email = models.EmailField(
         unique=True,
@@ -31,7 +31,7 @@ class User(AbstractUser):
         max_length=150,
         verbose_name='Пароль',
     )
-    is_subscribed = models.BooleanField(
+    is_active = models.BooleanField(
         verbose_name='Подписан',
         default=True,
     )

@@ -1,21 +1,29 @@
-"""Фильтр для рецепта, подписка, списо покупок"""
+"""Фильтр для рецепта, подписки и списка покупок"""
 import django_filters as filters
 from recipes.models import Recipe, Tag
 from rest_framework.filters import SearchFilter
 
 
 class IngredientSearchFilter(SearchFilter):
+    """Поиск по названию"""
+
     search_param = 'name'
 
 
 class RecipeFilter(filters.FilterSet):
+    """Фильтр для рецепта"""
+
     tags = filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',
         queryset=Tag.objects.all(),
     )
-    is_favorited = filters.CharFilter(method='get_is_favorited')
-    is_in_shopping_cart = filters.CharFilter(method='get_is_in_shopping_cart')
+    is_favorited = filters.CharFilter(
+        method='get_is_favorited',
+    )
+    is_in_shopping_cart = filters.CharFilter(
+        method='get_is_in_shopping_cart',
+    )
 
     class Meta:
         model = Recipe

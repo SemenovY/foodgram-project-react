@@ -1,4 +1,4 @@
-"""Django settings for backend project."""
+"""Основные настройки проекта"""
 import os
 from pathlib import Path
 
@@ -48,7 +48,7 @@ MIDDLEWARE = [
 CSRF_COOKIE_SECURE = False
 
 ROOT_URLCONF = 'backend.urls'
-# TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -66,25 +66,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': os.getenv(
-#             'DB_ENGINE',
-#             default='django.db.backends.postgresql',
-#         ),
-#         'NAME': os.getenv('DB_NAME', default='postgres'),
-#         'USER': os.getenv('POSTGRES_USER', default='postgres'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-#         'HOST': os.getenv('DB_HOST', default='localhost'),
-#         'PORT': os.getenv('DB_PORT', default=5432),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     },
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv(
+            'DB_ENGINE',
+            default='django.db.backends.postgresql',
+        ),
+        'NAME': os.getenv('DB_NAME', default='postgres2'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='localhost'),
+        'PORT': os.getenv('DB_PORT', default=5432),
+    },
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,28 +126,24 @@ DJOSER = {
 }
 
 LANGUAGE_CODE = 'ru-RU'
+
 TIME_ZONE = 'Europe/Moscow'
+
 USE_I18N = True
+
 USE_L10N = True
+
 USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'users.User'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DATE_TIME_FORMAT = '%d/%m/%Y %H:%M'
-
-EMPTY_VALUE_DISPLAY = '-Пусто-'
-
 NUM_SHOW = 3
 
-CLS_NAME_LEN = 15
+NAME_LEN = 15
 
 MAX_COOKING_TIME = 4320
 
@@ -156,3 +152,11 @@ MIN_COOKING_TIME = 1
 MAX_AMOUNT = 24768
 
 MIN_AMOUNT = 1
+
+DATE_TIME_FORMAT = '%d/%m/%Y %H:%M'
+
+AUTH_USER_MODEL = 'users.User'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMPTY_VALUE_DISPLAY = '-Пусто-'

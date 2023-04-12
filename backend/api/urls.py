@@ -10,12 +10,13 @@ app_name = 'api'
 
 router = DefaultRouter()
 
+
+router.register('users', CustomUserViewSet, basename='user')
 router.register(
     r'users/subscriptions', SubscriptionViewSet, basename='subscriptions'
 )
-router.register('users', CustomUserViewSet, basename='user')
-router.register('tags', TagViewSet, basename='tags')
 router.register('ingredients', IngredientViewSet, basename='ingredients')
+router.register('tags', TagViewSet, basename='tags')
 router.register('recipes', RecipesViewSet, basename='recipes')
 router.register(
     r'recipes/(?P<recipe_id>\d+)/favorite',

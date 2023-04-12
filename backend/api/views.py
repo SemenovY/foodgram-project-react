@@ -1,3 +1,4 @@
+"""Основная логика проекта"""
 from datetime import datetime as dt
 
 from django.contrib.auth import get_user_model
@@ -31,8 +32,7 @@ User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
-    """Кастомый вьюсет для пользователей,
-    также используется для создания и удаления подписок."""
+    """ViewSet используется для создания и удаления подписок"""
 
     pagination_class = PageLimitPagination
     add_serializer = UserSubscribeSerializer
@@ -58,7 +58,7 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def subscribe(self, request, id=None):
-        """Подписка и отписка на/от пользователя."""
+        """Подписка и отписка на/от пользователя"""
         user = request.user
         author = get_object_or_404(User, pk=id)
         serializer = SubscribeSerializer(
@@ -93,7 +93,7 @@ class CustomUserViewSet(UserViewSet):
 
 
 class SubscriptionViewSet(ListSubscriptionViewSet):
-    """Класс представления списка подписок текущего пользователя."""
+    """Представление списка подписок текущего пользователя"""
 
     pagination_class = PageLimitPagination
     serializer_class = UserSubscribeSerializer
@@ -104,9 +104,7 @@ class SubscriptionViewSet(ListSubscriptionViewSet):
 
 
 class TagViewSet(ReadOnlyModelViewSet):
-    """Вьюсет получения тега или списка всех тегов.
-    Доступ на изменение только администратору.
-    """
+    """Получение тега или списка всех тегов"""
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -114,9 +112,9 @@ class TagViewSet(ReadOnlyModelViewSet):
 
 
 class IngredientViewSet(ReadOnlyModelViewSet):
-    """Вьюсет полчения ингредиента или списка всех ингредиентов.
-    Доступ на изменение только администратору.
-    Добавлен поиск по частичному вхождению в начале названия ингредиента.
+    """
+    Получение ингредиента или списка всех ингредиентов,
+    поиск по частичному вхождению в начале названия ингредиента.
     """
 
     queryset = Ingredient.objects.all()
@@ -127,9 +125,9 @@ class IngredientViewSet(ReadOnlyModelViewSet):
 
 
 class RecipesViewSet(ModelViewSet):
-    """Вьюсет для получения, создания,частичного изменения
-    и удаления рецептов. Реализована фильтрация по тегам, автору,
-    присутсвию рецептов в избранном и списке покупок.
+    """Получение, создание и частичное изменение, а так же удаления рецептов.
+    Реализована фильтрация по тегам, автору,
+    присутствию рецептов в избранном и списке покупок.
     """
 
     queryset = Recipe.objects.all()
@@ -151,20 +149,20 @@ class RecipesViewSet(ModelViewSet):
 
     @action(methods=('get',), detail=False)
     def download_shopping_cart(self, request):
-        """Выгрузка файла .txt со списком покупок
-        Подсчет суммы ингредиентов по всем рецептам из корзины
+        """Выгрузка текстового файла со списком покупок.
+        Подсчёт суммы ингредиентов по всем рецептам из корзины.
         Адрес: */recipes/download_shopping_cart/.
         """
         user = self.request.user
         if not user.shopping_cart.exists():
             return Response(
-                'Вы не добавили ни обного рецепта в корзину.',
+                'Вы не добавили ни одного рецепта в корзину.',
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         filename = f'{user.username}_shopping_list.txt'
         shopping_list = [
-            f'Список покупок пользователя:\n'
+            f'Список покупок:\n'
             f'{user.first_name} {user.last_name}\n'
             f'Дата: {dt.now().strftime(DATE_TIME_FORMAT)}\n'
             f'____________________________'
@@ -185,8 +183,7 @@ class RecipesViewSet(ModelViewSet):
 
         shopping_list.append(
             '____________________________\n'
-            'Вперед за покупками!\n'
-            'Спасибо, что пользуететсь Foodgram'
+            'За покупками!\n'
         )
         shopping_list = '\n'.join(shopping_list)
         response = HttpResponse(
@@ -197,7 +194,7 @@ class RecipesViewSet(ModelViewSet):
 
 
 class FavoriteViewSet(CreateDestroyViewSet):
-    """Вьюсет для добавления и удаления рецепта в/из избранного."""
+    """ViewSet для добавления и удаления рецепта в/из избранного"""
 
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
@@ -226,7 +223,7 @@ class FavoriteViewSet(CreateDestroyViewSet):
 
 
 class ShoppingCartViewSet(CreateDestroyViewSet):
-    """Вьюсет для добавления и удаления рецепта в/из списка покупок."""
+    """ViewSet для добавления и удаления рецепта в/из списка покупок"""
 
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer

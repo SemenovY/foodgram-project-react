@@ -1,3 +1,4 @@
+"""Модели тегов, рецептов, ингредиентов и взаимозависимостей"""
 import textwrap
 
 from core.models import CoreModel
@@ -9,7 +10,7 @@ from django.db import models
 
 User = get_user_model()
 
-CLS_NAME_LEN = settings.CLS_NAME_LEN
+NAME_LEN = settings.NAME_LEN
 MAX_COOKING_TIME = settings.MAX_COOKING_TIME
 MIN_COOKING_TIME = settings.MIN_COOKING_TIME
 MAX_AMOUNT = settings.MAX_AMOUNT
@@ -17,19 +18,19 @@ MIN_AMOUNT = settings.MIN_AMOUNT
 
 
 class Tag(models.Model):
-    """Модель Тегов."""
+    """Модель Тегов"""
 
     name = models.CharField(
-        'Название',
+        verbose_name='Название',
         max_length=200,
         unique=True,
     )
     color = models.CharField(
-        'Цвет в HEX',
+        verbose_name='Цвет в HEX',
         max_length=7,
     )
     slug = models.SlugField(
-        'Уникальный слаг',
+        verbose_name='Уникальный слаг',
         max_length=200,
         unique=True,
     )
@@ -38,8 +39,8 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
-    def __str__(self) -> str:
-        return self.name[:CLS_NAME_LEN]
+    def __str__(self):
+        return self.name[:NAME_LEN]
 
     def clean(self):
         self.color = hex_color_validator(self.color)
@@ -47,14 +48,14 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    """Модель Ингредиентов."""
+    """Модель для ингредиентов"""
 
     name = models.CharField(
-        'Название ингредиента',
+        verbose_name='Название ингредиента',
         max_length=200,
     )
     measurement_unit = models.CharField(
-        'Единица измерения',
+        verbose_name='Единица измерения',
         max_length=200,
     )
 
@@ -63,18 +64,18 @@ class Ingredient(models.Model):
         verbose_name = 'Ингридиент'
         verbose_name_plural = 'Ингридиенты'
 
-    def __str__(self) -> str:
+    def __str__(self):
         return (
-            f'Ингредиент: {self.name[:CLS_NAME_LEN]}, '
+            f'Ингредиент: {self.name[:NAME_LEN]}, '
             f'измеряется в: {self.measurement_unit}'
         )
 
 
 class Recipe(models.Model):
-    """Модель Рецептов."""
+    """Модель Рецептов"""
 
     name = models.CharField(
-        'Название рецепта',
+        verbose_name='Название рецепта',
         max_length=200,
     )
     author = models.ForeignKey(
@@ -83,8 +84,13 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Автор',
     )
-    image = models.ImageField('Картинка', upload_to='recipe_images/')
-    text = models.TextField('Описание')
+    image = models.ImageField(
+        verbose_name='Изображение рецепта',
+        upload_to='recipe_images/',
+    )
+    text = models.TextField(
+        verbose_name='Описание',
+    )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientRecipe',
@@ -96,17 +102,16 @@ class Recipe(models.Model):
         related_name='recipes',
     )
     cooking_time = models.PositiveSmallIntegerField(
-        'Время приготовления',
+        verbose_name='Время приготовления',
         validators=(
             MinValueValidator(
                 MIN_COOKING_TIME,
-                'Время приготовления не может быть меньше минуты.',
+                'Время приготовления не может быть меньше минуты',
             ),
             MaxValueValidator(
                 MAX_COOKING_TIME,
                 (
                     'Вы указали слишком длительное время приготовления '
-                    '(максимум 10080 минут).'
                 ),
             ),
         ),
@@ -128,19 +133,25 @@ class Recipe(models.Model):
             ),
         )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return (
-            f'Название: {self.name[:CLS_NAME_LEN]} <-> '
+            f'Название: {self.name[:NAME_LEN]} <==> '
             f'Описание: {textwrap.shorten(self.text, width=40)}. '
         )
 
 
 class TagRecipe(models.Model):
-    """Модель для связи Тега и Рецепта многие ко многим."""
+    """Модель для связи Тега и Рецепта"""
 
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Тег')
+    tag = models.ForeignKey(
+        Tag,
+        on_delete=models.CASCADE,
+        verbose_name='Тег'
+    )
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, verbose_name='Рецепт'
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Рецепт',
     )
 
     class Meta:
@@ -152,12 +163,12 @@ class TagRecipe(models.Model):
             ),
         )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f'Рецепт: {self.recipe.name} содержит тег: {self.tag}'
 
 
 class IngredientRecipe(models.Model):
-    """Модель для связя Ингредиента и Рецепта многие ко многим."""
+    """Модель для связи Ингредиента и Рецепта"""
 
     ingredient = models.ForeignKey(
         Ingredient,
@@ -180,17 +191,16 @@ class IngredientRecipe(models.Model):
             MaxValueValidator(
                 MAX_AMOUNT,
                 (
-                    'Вы указали слишком большое количество ингредиента '
-                    '(максимальное значение 32767).'
+                    'Указано слишком большое количество ингредиента'
                 ),
             ),
         ),
     )
 
     class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Количество ингридиентов'
         ordering = ('recipe',)
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Количество ингредиентов'
         constraints = (
             models.UniqueConstraint(
                 fields=(
@@ -201,15 +211,15 @@ class IngredientRecipe(models.Model):
             ),
         )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return (
-            f'Рецепт <-> {self.recipe.name} '
-            f'включает <-> {self.ingredient.name}'
+            f'Рецепт <==> {self.recipe.name} '
+            f'содержит <==> {self.ingredient.name}'
         )
 
 
 class Favorite(CoreModel):
-    """Модель избранного."""
+    """Модель для добавления рецепта в избранное"""
 
     user = models.ForeignKey(
         User,
@@ -234,7 +244,7 @@ class Favorite(CoreModel):
             ),
         )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return (
             f'Пользователь: {self.user}, '
             f'избранные рецепты: {self.favorite_recipe}'
@@ -242,7 +252,7 @@ class Favorite(CoreModel):
 
 
 class ShoppingCart(CoreModel):
-    """Модель списка покупок."""
+    """Модель для списка покупок"""
 
     user = models.ForeignKey(
         User,
@@ -266,8 +276,8 @@ class ShoppingCart(CoreModel):
             ),
         )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return (
             f'Пользователь: {self.user.username}, '
-            f'для покупок по рецепту: {self.recipe.name}'
+            f'для покупок: {self.recipe.name}'
         )

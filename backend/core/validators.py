@@ -5,9 +5,8 @@ from django.core.exceptions import ValidationError
 
 
 def hex_color_validator(color):
-    """Проверяет - может ли значение быть шестнадцатеричным цветом.
-    Проверка на длину(6 символов без учета #) и на разрешенные символы.
-    """
+    """Проверка на длину и на разрешенные символы"""
+
     color = color.strip(' #')
     if len(color) != 6:
         raise ValidationError(

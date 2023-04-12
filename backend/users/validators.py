@@ -4,10 +4,10 @@ import re
 from django.core.exceptions import ValidationError
 
 
-def username_validator(value):
-    """Проверка поля username модели user на допустимые символы"""
+def custom_user_validator(value):
+    """Проверка поля username модели User на допустимые символы"""
 
     if re.findall(r'[^\w.@+-]+', value):
         raise ValidationError(
-            'Используйте буквы, цифры и символы @/./+/-/ при создании имени'
+            'Только буквы, цифры и символы @/./+/-/'
         )

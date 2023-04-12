@@ -5,7 +5,7 @@ from rest_framework.permissions import SAFE_METHODS, BasePermission
 class BaseActivePermission(BasePermission):
     """Базовый класс разрешений"""
 
-    message = 'Вам необходимо зарегестрироваться'
+    message = 'Вам необходимо зарегистрироваться'
 
     def has_permission(self, request, view):
         return (
@@ -16,7 +16,7 @@ class BaseActivePermission(BasePermission):
 
 
 class IsAdminOrReadOnly(BaseActivePermission):
-    """Права администратора или только на чтение."""
+    """Права администратора или только чтение"""
 
     message = 'Доступ только для администратора сайта'
 
@@ -27,9 +27,9 @@ class IsAdminOrReadOnly(BaseActivePermission):
 
 
 class AuthorAdminOrReadOnly(BaseActivePermission):
-    """Права автора, администратора или только на чтение."""
+    """Права автора, администратора или только чтение"""
 
-    message = 'Недостаточно прав, аутентифицируйтесь!'
+    message = 'Недостаточно прав'
 
     def has_object_permission(self, request, view, obj):
         return request.method in SAFE_METHODS or (
