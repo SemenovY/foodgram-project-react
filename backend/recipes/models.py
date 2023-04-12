@@ -21,7 +21,7 @@ class Tag(models.Model):
     """Модель Тегов"""
 
     name = models.CharField(
-        verbose_name='Название',
+        verbose_name='Тег',
         max_length=200,
         unique=True,
     )
