@@ -1,0 +1,9 @@
+
+.git
+.cache
+**/.env
+**/.aws
+**/.ssh
+*.md
+!README*.md
+README-secret.md
