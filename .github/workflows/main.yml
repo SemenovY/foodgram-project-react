@@ -7,7 +7,6 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v2
@@ -47,13 +46,13 @@ jobs:
         with:
           context: backend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+          tags: ${{ secrets.DOCKER_HUB_LOGIN }}/backend:latest
       - name: Push frontend to Docker Hub
         uses: docker/build-push-action@v2
         with:
           context: frontend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKER_HUB_LOGIN }}/frontend:latest
 
   deploy:
     name: Deploy
@@ -82,10 +81,11 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            
             sudo docker compose stop
             sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            sudo docker rmi ${{ secrets.DOCKER_USER }}/frontend
-            sudo docker rmi ${{ secrets.DOCKER_USER }}/backend
+            sudo docker rmi ${{ secrets.DOCKER_HUB_LOGIN }}/frontend
+            sudo docker rmi ${{ secrets.DOCKER_HUB_LOGIN }}/backend
             sudo docker compose up -d
             sudo docker image prune -a
 
