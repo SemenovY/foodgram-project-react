@@ -69,8 +69,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
 
           script: |
-            cd backend/
-            rm -f .env
+            
             touch .env
             echo DEBUG=${{ secrets.DEBUG }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
