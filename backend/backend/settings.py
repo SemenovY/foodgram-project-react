@@ -2,15 +2,16 @@
 import os
 from pathlib import Path
 
+from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 
-DEBUG = DEBUG = os.getenv("DEBUG", default=False)
+DEBUG = False
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="127.0.0.1").split()
 
@@ -69,10 +70,10 @@ DATABASES = {
             "DB_ENGINE",
             default="django.db.backends.postgresql",
         ),
-        "NAME": os.getenv("DB_NAME", default="postgres2"),
+        "NAME": os.getenv("DB_NAME", default="postgres"),
         "USER": os.getenv("POSTGRES_USER", default="postgres"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="postgres"),
-        "HOST": os.getenv("DB_HOST", default="localhost"),
+        "HOST": os.getenv("DB_HOST", default="127.0.0.1"),
         "PORT": os.getenv("DB_PORT", default=5432),
     },
 }

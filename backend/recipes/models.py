@@ -3,18 +3,17 @@ import textwrap
 
 from core.models import CoreModel
 from core.validators import hex_color_validator
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.functions import Length
+
+from backend.settings import (MAX_AMOUNT, MAX_COOKING_TIME, MIN_AMOUNT,
+                              MIN_COOKING_TIME, NAME_LEN)
 
 User = get_user_model()
 
-NAME_LEN = settings.NAME_LEN
-MAX_COOKING_TIME = settings.MAX_COOKING_TIME
-MIN_COOKING_TIME = settings.MIN_COOKING_TIME
-MAX_AMOUNT = settings.MAX_AMOUNT
-MIN_AMOUNT = settings.MIN_AMOUNT
+models.CharField.register_lookup(Length)
 
 
 class Tag(models.Model):
@@ -28,6 +27,7 @@ class Tag(models.Model):
     color = models.CharField(
         verbose_name="Цвет в HEX",
         max_length=7,
+        unique=True,
     )
     slug = models.SlugField(
         verbose_name="Уникальный слаг",
@@ -43,6 +43,7 @@ class Tag(models.Model):
         return self.name[:NAME_LEN]
 
     def clean(self):
+        """Обработка полей"""
         self.color = hex_color_validator(self.color)
         return super().clean()
 
@@ -60,21 +61,28 @@ class Ingredient(models.Model):
     )
 
     class Meta:
+        """Проверка полей"""
+
         ordering = ("name",)
         verbose_name = "Ингредиент"
         verbose_name_plural = "Ингредиенты"
         constraints = (
             models.UniqueConstraint(
                 fields=("name", "measurement_unit"),
-                name="unique_name_measurement_unit",
+                name="unique_for_ingredient",
+            ),
+            models.CheckConstraint(
+                check=models.Q(name__length__gt=0),
+                name="\n%(app_label)s_%(class)s_name is empty\n",
+            ),
+            models.CheckConstraint(
+                check=models.Q(measurement_unit__length__gt=0),
+                name="\n%(app_label)s_%(class)s_measurement_unit is empty\n",
             ),
         )
 
     def __str__(self):
-        return (
-            f"Ингредиент: {self.name[:NAME_LEN]}, "
-            f"измеряется в: {self.measurement_unit}"
-        )
+        return f"{self.name[:NAME_LEN]}, измеряется в: {self.measurement_unit}"
 
 
 class Recipe(models.Model):
@@ -127,6 +135,8 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        """Проверка полей"""
+
         ordering = ("-pub_date",)
         verbose_name = "Рецепт"
         verbose_name_plural = "Рецепты"
@@ -139,7 +149,7 @@ class Recipe(models.Model):
 
     def __str__(self):
         return (
-            f"Название: {self.name[:NAME_LEN]} <==> "
+            f"{self.name[:NAME_LEN]} <==> "
             f"Описание: {textwrap.shorten(self.text, width=40)}. "
         )
 
@@ -155,6 +165,8 @@ class TagRecipe(models.Model):
     )
 
     class Meta:
+        """Проверка полей"""
+
         verbose_name = "Тег рецепта"
         verbose_name_plural = "Теги рецепта"
         constraints = (
@@ -196,6 +208,8 @@ class IngredientRecipe(models.Model):
     )
 
     class Meta:
+        """Проверка полей"""
+
         ordering = ("recipe",)
         verbose_name = "Ингредиент"
         verbose_name_plural = "Количество ингредиентов"
@@ -233,6 +247,8 @@ class Favorite(CoreModel):
     )
 
     class Meta:
+        """Проверка полей"""
+
         verbose_name = "Избранное"
         verbose_name_plural = "Избранные"
         constraints = (
@@ -266,6 +282,8 @@ class ShoppingCart(CoreModel):
     )
 
     class Meta:
+        """Проверка полей"""
+
         verbose_name = "Список покупок"
         verbose_name_plural = "Списки покупок"
         constraints = (

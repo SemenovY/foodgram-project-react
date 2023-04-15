@@ -1,6 +1,5 @@
 """Основная логика проекта"""
 from django.contrib.auth import get_user_model
-
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
@@ -179,6 +178,7 @@ class FavoriteViewSet(CreateDestroyViewSet):
         return context
 
     def perform_create(self, serializer):
+        """Добавление рецепта в избранное"""
         serializer.save(
             user=self.request.user,
             favorite_recipe=get_object_or_404(
@@ -188,6 +188,7 @@ class FavoriteViewSet(CreateDestroyViewSet):
 
     @action(methods=("delete",), detail=True)
     def delete(self, request, recipe_id):
+        """Удаление рецепта из избранного"""
         get_object_or_404(
             Favorite, user=request.user, favorite_recipe_id=recipe_id
         ).delete()
@@ -208,6 +209,7 @@ class ShoppingCartViewSet(CreateDestroyViewSet):
         return context
 
     def perform_create(self, serializer):
+        """Добавление рецепта в корзину"""
         serializer.save(
             user=self.request.user,
             recipe=get_object_or_404(Recipe, id=self.kwargs.get("recipe_id")),
@@ -215,6 +217,7 @@ class ShoppingCartViewSet(CreateDestroyViewSet):
 
     @action(methods=("delete",), detail=True)
     def delete(self, request, recipe_id):
+        """Удаление рецепта из корзины"""
         get_object_or_404(
             ShoppingCart, user=request.user, recipe_id=recipe_id
         ).delete()

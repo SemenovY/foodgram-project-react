@@ -6,7 +6,7 @@ class CoreModel(Model):
     """Вспомогательная базовая модель для Recipes/ShoppingCart и Favorite"""
 
     date_added = DateTimeField(
-        'Дата добавления', auto_now_add=True, editable=False
+        "Дата добавления", auto_now_add=True, editable=False
     )
 
     class Meta:

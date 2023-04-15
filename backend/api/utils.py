@@ -1,11 +1,11 @@
 """Вспомогательные функции"""
 from datetime import datetime as dt
+
 from django.db.models import F, Sum
 from django.http import HttpResponse
+from recipes.models import Ingredient
 
 from backend.settings import DATE_TIME_FORMAT
-
-from recipes.models import Ingredient
 
 
 def get_shopping_list(self, request):
