@@ -1,6 +1,9 @@
 name: Foodgram workflow
 
-on: [ push ]
+on:
+  push:
+    branches: [ master ]
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -39,18 +42,23 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_LOGIN }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Push to Docker Hub
+      - name: Push backend to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          push: true
           context: backend/
-          tags: ${{ secrets.DOCKER_HUB_LOGIN }}/backend:latest
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+      - name: Push frontend to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: frontend/
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
-    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: executing remote ssh commands to deploy
@@ -59,20 +67,21 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
+
           script: |
+            cd backend/
+            rm -f .env
             touch .env
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             echo DEBUG=${{ secrets.DEBUG }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-            
+            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker compose stop
             sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
             sudo docker rmi ${{ secrets.DOCKER_USER }}/frontend
