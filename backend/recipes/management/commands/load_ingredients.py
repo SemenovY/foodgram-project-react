@@ -1,24 +1,23 @@
 """Загружаем данные ингредиентов из файла"""
-import json
+import csv
 
-from django.core.management import BaseCommand
+from django.core.management.base import BaseCommand
 from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
     """Команда для загрузки ингредиентов из файла"""
 
-    def handle(self, *args, **options):
-        """Загружаем данные ингредиентов из файла"""
-        with open("/app/data/ingredients.json", "r", encoding="utf-8") as file:
-            data = json.load(file)
-            for item in data:
-                ingredient = Ingredient.objects.create(
-                    name=item["name"],
-                    measurement_unit=item["measurement_unit"],
-                )
-                self.stdout.write(
-                    self.style.SUCCESS(
-                        f"Successfully created {ingredient.name}"
-                    )
-                )
+    help = "Загружаем данные ингредиентов из файла"
+
+
+def handle(self, **options):
+    """Загружаем данные ингредиентов из файла"""
+    with open("data/ingredients.csv", encoding="utf-8") as csv_file:
+        reader = csv.reader(csv_file, delimiter=",")
+        Ingredient.objects.bulk_create(
+            [
+                Ingredient(id=num, name=line[0], measurement_unit=line[1])
+                for num, line in enumerate(reader)
+            ]
+        )

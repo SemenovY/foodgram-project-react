@@ -4,6 +4,8 @@ services:
   db:
     container_name: db
     image: postgres:13.0-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -19,7 +21,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - ./.env
     restart: always
 
   frontend:
