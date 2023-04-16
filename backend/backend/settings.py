@@ -7,13 +7,11 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = (
-    "django-insecure-q@#new-h8lz4w7wp+-ofo7)mr@vpdpq%3t3v85$%j1%u8m_*%r"
-)
+SECRET_KEY = os.getenv(key="SECRET_KEY")
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="127.0.0.1").split()
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -41,8 +39,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-CSRF_COOKIE_SECURE = False
 
 ROOT_URLCONF = "backend.urls"
 
@@ -134,21 +130,13 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 NUM_SHOW = 3
-
 NAME_LEN = 15
-
 MAX_COOKING_TIME = 4320
-
 MIN_COOKING_TIME = 1
-
 MAX_AMOUNT = 24768
-
 MIN_AMOUNT = 1
-
 DATE_TIME_FORMAT = "%d/%m/%Y %H:%M"
 
 AUTH_USER_MODEL = "users.User"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 EMPTY_VALUE_DISPLAY = "-Пусто-"

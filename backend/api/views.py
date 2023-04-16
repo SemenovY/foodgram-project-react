@@ -15,19 +15,12 @@ from .filters import IngredientSearchFilter, RecipeFilter
 from .mixins import CreateDestroyViewSet, ListSubscriptionViewSet
 from .paginators import PageLimitPagination
 from .permissions import AuthorAdminOrReadOnly, IsAdminOrReadOnly
-from .serializers import (
-    CreateRecipeSerializer,
-    CustomPasswordSerializer,
-    CustomUserCreateSerializer,
-    CustomUserSerializer,
-    FavoriteSerializer,
-    GetRecipeSerializer,
-    IngredientSerializer,
-    ShoppingCartSerializer,
-    SubscribeSerializer,
-    TagSerializer,
-    UserSubscribeSerializer,
-)
+from .serializers import (CreateRecipeSerializer, CustomPasswordSerializer,
+                          CustomUserCreateSerializer, CustomUserSerializer,
+                          FavoriteSerializer, GetRecipeSerializer,
+                          IngredientSerializer, ShoppingCartSerializer,
+                          SubscribeSerializer, TagSerializer,
+                          UserSubscribeSerializer)
 from .utils import get_shopping_list
 
 User = get_user_model()

@@ -96,6 +96,7 @@ jobs:
             sudo touch .env
             sudo chmod 666 .env
             
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
@@ -108,7 +109,7 @@ jobs:
             sudo docker stop $(sudo docker ps -a -q)
             
             sudo docker-compose up -d --build
-                      
+            
             sudo docker-compose exec -it backend bash python manage.py collectstatic -yes
             sudo docker-compose exec -it backend bash python manage.py migrate
 
