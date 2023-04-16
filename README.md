@@ -55,6 +55,12 @@ sudo docker-compose exec backend python manage.py collectstatic --no-input
 sudo docker-compose exec backend python manage.py createsuperuser
 ```
 
+6. При необходимости загрузите базу данными::
+
+```bash
+sudo docker-compose exec backend python manage.py load_ingredients
+```
+
 ## Запуск проекта в автоматическом режиме
 
 1. Со страницы репозитория https://github.com/SemenovY/foodgram-project-react.git создать fork проекта в свой GitHUB;
@@ -85,12 +91,6 @@ DB_ENGINE, DB_NAME , POSTGRES_USER, POSTGRES_PASSWORD, DB_HOST, DB_PORT
 TELEGRAM_TO, TELEGRAM_TOKEN
 ```
 
-- указать секретный ключ и разрешенные адреса(через запятую) для вашего проекта:
-
-```bash
-SECRET_KEY, ALLOWED_HOSTS
-```
-
 3. Подготовить ваш сервер:
 
 - установить докер:
@@ -107,12 +107,12 @@ SECRET_KEY, ALLOWED_HOSTS
 
 4. На GitHUB выполнить любой commit, для запуска action workflow;
 
-5. На вашем сервере, загрузить данные, собрать статику;
+5. На вашем сервере, загрузить данные:
 
-- выполнить миграции:
+- При необходимости загрузите базу данными::
 
 ```bash
-sudo docker-compose exec backend python manage.py migrate
+sudo docker-compose exec backend python manage.py load_ingredients
 ```
 
 - создайте суперюзера:
@@ -121,11 +121,8 @@ sudo docker-compose exec backend python manage.py migrate
 sudo docker-compose exec backend python manage.py createsuperuser
 ```
 
-- соберите статику:
-
-```bash
-sudo docker-compose exec backend python manage.py collectstatic --no-input
-```
+В папке data подготовлен список ингредиентов с единицами измерения.
+Список сохранён в форматах JSON и CSV: данные из списка будет необходимо загрузить в базу.
 
 6. Ваш проект доступен по адресу вашего сервера:
    http://<ip_сервера>/
