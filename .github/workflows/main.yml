@@ -92,6 +92,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
 
           script: |
+
             sudo rm -f .env        
             sudo touch .env
             sudo chmod 666 .env
