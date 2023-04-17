@@ -10,14 +10,13 @@ class Command(BaseCommand):
 
     help = "Загружаем данные ингредиентов из файла"
 
-
-def handle(self, **options):
-    """Загружаем данные ингредиентов из файла"""
-    with open("data/ingredients.csv", encoding="utf-8") as csv_file:
-        reader = csv.reader(csv_file, delimiter=",")
-        Ingredient.objects.bulk_create(
-            [
-                Ingredient(id=num, name=line[0], measurement_unit=line[1])
-                for num, line in enumerate(reader)
-            ]
-        )
+    def handle(self, **options):
+        """Загружаем данные ингредиентов из файла"""
+        with open("data/ingredients.csv", encoding="utf-8") as csv_file:
+            reader = csv.reader(csv_file, delimiter=",")
+            Ingredient.objects.bulk_create(
+                [
+                    Ingredient(id=num, name=line[0], measurement_unit=line[1])
+                    for num, line in enumerate(reader)
+                ]
+            )
