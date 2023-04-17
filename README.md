@@ -9,7 +9,9 @@
 Проект доступен по адресу: http://fun-cook.ru/.
 
 Панель администратора доступна по адресу: http://fun-cook.ru/admin.
+
 Логин: admin
+
 Пароль: admin
 
 Документация API доступна по адресу: http://fun-cook.ru/api/docs/.
