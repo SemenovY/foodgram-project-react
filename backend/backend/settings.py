@@ -13,7 +13,8 @@ SECRET_KEY = (
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["158.160.43.19", "localhost", "fun-cook.ru", "127.0.0.1"]
+# ALLOWED_HOSTS = ["158.160.43.19", "localhost", "fun-cook.ru", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -71,7 +72,7 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME", default="postgres"),
         "USER": os.getenv("POSTGRES_USER", default="postgres"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="postgres"),
-        "HOST": os.getenv("DB_HOST", default="127.0.0.1"),
+        "HOST": os.getenv("DB_HOST", default="db"),
         "PORT": os.getenv("DB_PORT", default=5432),
     },
 }

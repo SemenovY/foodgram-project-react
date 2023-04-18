@@ -10,11 +10,13 @@
 
 Панель администратора доступна по адресу: http://fun-cook.ru/admin.
 
-Логин: admin
+Логин: admin@mail.ru
 
 Пароль: admin
 
 Документация API доступна по адресу: http://fun-cook.ru/api/docs/.
+
+Посмотреть список доступных адресов API : http://fun-cook.ru/api/.
 
 ## Запуск проекта локально
 
