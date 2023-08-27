@@ -135,7 +135,7 @@ sudo docker-compose exec backend python manage.py createsuperuser
 
 ***Над проектом работал:***
 
-* Семёнов Юрий | Github:https://github.com/SemenovY | very_junior разработчик.
+* Семёнов Юрий | Github:https://github.com/SemenovY | Python разработчик.
 
 ## Технологии
 
