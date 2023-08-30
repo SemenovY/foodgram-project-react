@@ -88,9 +88,9 @@
 
 Посмотреть список доступных адресов API: http://158.160.43.19/api/
 
-## Инструкции по развёртыванию проекта:
+### Инструкции по развёртыванию проекта:
 
-## Запуск проекта локально
+### Запуск проекта локально
 
 1. Склонируйте репозиторий и прейдите в корневую директорию foodgram-project-react:
 
@@ -139,7 +139,7 @@ sudo docker-compose exec backend python manage.py createsuperuser
 sudo docker-compose exec backend python manage.py load_ingredients
 ```
 
-## Запуск проекта в автоматическом режиме
+### Запуск проекта в автоматическом режиме
 
 1. Со страницы репозитория https://github.com/SemenovY/foodgram-project-react.git создать fork проекта в свой GitHUB;
 
