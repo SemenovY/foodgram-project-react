@@ -6,6 +6,16 @@
 
 На этом сервисе пользователи смогут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
+## Технологии
+* Python
+* Django
+* Django REST
+* Docker
+* PostgreSQL
+* Nginx
+* Gunicorn
+* GitHub actions 
+
 ### Базовые модели проекта
 Более подробно с базовыми моделями можно ознакомиться в спецификации API.
 
@@ -221,7 +231,7 @@ sudo docker-compose exec backend python manage.py createsuperuser
 
 _____________
 ***Над проектом работал:***
-* Семёнов Юрий | GitHub: [SemenovY](https://github.com/SemenovY)| Python developer.
+* Семёнов Юрий | GitHub: [SemenovY](https://github.com/SemenovY) | Python developer.
 
 ### *Free Software, Not for commercial use!*
 ### =^..^=______/
